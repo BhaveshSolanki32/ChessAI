@@ -10,7 +10,8 @@ public class MovePiece : MonoBehaviour //moves the piece to the desired postion 
     [SerializeField] GridData gridData;
     [SerializeField] InputReceiver inputReceiver;
     List<Vector2Int> movableTiles=new();
-    public Action<GameObject,Vector2Int> OnPieceMoved;
+    public Action<GameObject,Vector2Int> OnPieceStartMoving;
+    public Action<GameObject> OnPieceEndMoving;
     private void Awake()
     {
         SelectPiece _selectPiece;
@@ -26,16 +27,18 @@ public class MovePiece : MonoBehaviour //moves the piece to the desired postion 
     {
         _piece.transform.parent.GetComponent<DisplayTiles>().MarkTiles(new());
 
-        if (!movableTiles.Contains(_toWhereGridPost) || !_skipMovableTilesListContainCheckForAI)
+
+        if (!movableTiles.Contains(_toWhereGridPost) && !_skipMovableTilesListContainCheckForAI)
         {
             return;
         }
-        inputReceiver.TakeInput(false);
+        
         Vector3 _newPost = gridData.GetTile(_toWhereGridPost).transform.position;
         Transform _pieceTransform = _piece.transform;
-        OnPieceMoved?.Invoke(_pieceTransform.gameObject, WorldToGridPostion.Convert(_newPost, gridData));
-
+        
         StartCoroutine(lerpPostion(_pieceTransform, _newPost));
+        OnPieceStartMoving?.Invoke(_pieceTransform.gameObject, WorldToGridPostion.Convert(_newPost, gridData));
+       
     }
 
     IEnumerator lerpPostion(Transform _pieceTransform, Vector3 _newPost)
@@ -45,8 +48,8 @@ public class MovePiece : MonoBehaviour //moves the piece to the desired postion 
             _pieceTransform.position = Vector3.MoveTowards(_pieceTransform.position, _newPost, speed);
             yield return new WaitForSeconds(0.08f);
         }
-        inputReceiver.TakeInput(true);
-
+        
+        OnPieceEndMoving?.Invoke(_pieceTransform.gameObject);
     }
 
 }

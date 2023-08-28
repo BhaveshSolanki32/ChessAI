@@ -25,13 +25,13 @@ public class MiniMaxHandler : MonoBehaviour
             List<Vector2Int> _movableTiles = x.GetComponent<IPiece>().MovableTilePosts();
             foreach (Vector2Int y in _movableTiles)
             {
-                Tuple<Dictionary<Vector2Int, GameObject>, Dictionary<Vector2Int, GameObject>> _newPieceDict = aiPiecePostUpdater.UpdatePiecePost(x, y, _whitePiece, _blackPiece);
+                Tuple<Dictionary<Vector2Int, GameObject>, Dictionary<Vector2Int, GameObject>> _newPieceDict = aiPiecePostUpdater.UpdatePiecePost(x, y, new(_whitePiece),new( _blackPiece));
 
-                Dictionary<Vector2Int, GameObject> _newBlackPiece = _newPieceDict.Item1;
-                Dictionary<Vector2Int, GameObject> _newWhitePiece = _newPieceDict.Item2;
+                Dictionary<Vector2Int, GameObject> _newBlackPiece = _newPieceDict.Item2;
+                Dictionary<Vector2Int, GameObject> _newWhitePiece = _newPieceDict.Item1;
 
 
-                int _score = (int) miniMaxFindBestMove(_newBlackPiece, _newWhitePiece, _depth-1, false);
+                int _score = (int) miniMaxFindBestMove(_newBlackPiece, _newWhitePiece, _depth-1, true, -999999999, 999999999);
 
                 _possibleMoves.Add(new(y, x, _score));
             }
@@ -41,15 +41,15 @@ public class MiniMaxHandler : MonoBehaviour
     }
 
     //recursively performs minimax to the desired depth
-    float miniMaxFindBestMove(Dictionary<Vector2Int, GameObject> _blackPiece, Dictionary<Vector2Int, GameObject> _whitePiece, int _depth, bool _isWhiteTurn)
+    int miniMaxFindBestMove(Dictionary<Vector2Int, GameObject> _blackPiece, Dictionary<Vector2Int, GameObject> _whitePiece, int _depth, bool _isWhiteTurn, int _alpha, int _beta)
     {
 
-        float _score=(_isWhiteTurn)?(Mathf.Infinity):(Mathf.NegativeInfinity);
+        int _score=(_isWhiteTurn)?(999999) :(-999999);
 
-        if (_depth <= 1 || aiPiecePostUpdater.IsKingDead( ref _whitePiece,ref _blackPiece))
+        if (_depth < 1 || aiPiecePostUpdater.IsKingDead(  _whitePiece, _blackPiece))
         {
            _score =  GetComponent<HeuristicFunctionCalc>().CalcHeuristics(_blackPiece, _whitePiece);
-            Debug.Log("calc heurao " + _score);
+
             return _score;
         }
         Dictionary<Vector2Int, GameObject> _toCheckDict = (_isWhiteTurn)?(_whitePiece):(_blackPiece);
@@ -58,16 +58,28 @@ public class MiniMaxHandler : MonoBehaviour
             List<Vector2Int> _movableTiles = x.GetComponent<IPiece>().MovableTilePosts();
             foreach(Vector2Int y in _movableTiles)
             {
-                Tuple<Dictionary<Vector2Int, GameObject>, Dictionary<Vector2Int, GameObject>> _newPieceDict = aiPiecePostUpdater.UpdatePiecePost(x, y, _whitePiece, _blackPiece);
+                Tuple<Dictionary<Vector2Int, GameObject>, Dictionary<Vector2Int, GameObject>> _newPieceDict = aiPiecePostUpdater.UpdatePiecePost(x, y, new(_whitePiece),new( _blackPiece));
 
-                Dictionary<Vector2Int, GameObject> _newBlackPiece = _newPieceDict.Item1;
-                Dictionary<Vector2Int, GameObject> _newWhitePiece = _newPieceDict.Item2;
+                Dictionary<Vector2Int, GameObject> _newBlackPiece = _newPieceDict.Item2;
+                Dictionary<Vector2Int, GameObject> _newWhitePiece = _newPieceDict.Item1;
 
 
-                float _newScore = miniMaxFindBestMove(_newBlackPiece, _newWhitePiece, _depth-1, !_isWhiteTurn);
+                int _newScore = miniMaxFindBestMove(_newBlackPiece, _newWhitePiece, _depth-1, !_isWhiteTurn, _alpha, _beta);
 
                 _score = (_isWhiteTurn) ? (Mathf.Min(_score, _newScore)) : (Mathf.Max(_score, _newScore));
-                
+
+                if (_isWhiteTurn)//minimizing player
+                {
+                    _score = Mathf.Min(_score, _newScore);
+                    _beta = Mathf.Min(_newScore, _beta);
+                }
+                else//maximising player
+                {
+                    _score = Mathf.Max(_score, _newScore);
+                    _alpha = Mathf.Max(_alpha, _newScore);
+                }
+
+                if (_beta <= _alpha) break;
             }
         }
 

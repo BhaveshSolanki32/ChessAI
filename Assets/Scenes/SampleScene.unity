@@ -12463,7 +12463,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pieceGameObject: {fileID: 1294307906}
-  Depth: 2
+  Depth: 4
 --- !u!4 &1611783026
 Transform:
   m_ObjectHideFlags: 0

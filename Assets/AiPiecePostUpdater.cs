@@ -26,7 +26,7 @@ public class AiPiecePostUpdater : MonoBehaviour
 
 
 
-        if (DoesPieceExist(_newPost, _isPlayerPost, ref _whitePieceDict, ref _blackPieceDict)) return new(_whitePieceDict, _blackPieceDict);
+        if (doesPieceExist(_newPost, _isPlayerPost, _whitePieceDict, _blackPieceDict)) return new(_whitePieceDict, _blackPieceDict);
 
 
         if (_isPlayerPost)
@@ -48,7 +48,7 @@ public class AiPiecePostUpdater : MonoBehaviour
 
     }
 
-    public bool DoesPieceExist(Vector2Int _post, bool _isPlayerPost, ref Dictionary<Vector2Int, GameObject> _whitePieceDict, ref Dictionary<Vector2Int, GameObject> _blackPieceDict)
+    bool doesPieceExist(Vector2Int _post, bool _isPlayerPost,  Dictionary<Vector2Int, GameObject> _whitePieceDict,  Dictionary<Vector2Int, GameObject> _blackPieceDict)
     {
         if (_isPlayerPost)
             return _whitePieceDict.ContainsKey(_post);
@@ -56,8 +56,8 @@ public class AiPiecePostUpdater : MonoBehaviour
             return _blackPieceDict.ContainsKey(_post);
     }
 
-    public bool IsKingDead(ref Dictionary<Vector2Int, GameObject> _whitePieceDict, ref Dictionary<Vector2Int, GameObject> _blackPieceDict)
+    public bool IsKingDead(Dictionary<Vector2Int, GameObject> _whitePieceDict, Dictionary<Vector2Int, GameObject> _blackPieceDict)
     {
-        return (_whitePieceDict.ContainsValue(whiteKing) || _blackPieceDict.ContainsValue(blackKing));
+        return !(_whitePieceDict.ContainsValue(whiteKing) || _blackPieceDict.ContainsValue(blackKing));
     }
 }

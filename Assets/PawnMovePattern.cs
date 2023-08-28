@@ -14,7 +14,7 @@ public class PawnMovePattern : BasePieceMovementPattern, IPiece
         base.Awake();
 
         if (transform.parent.parent.TryGetComponent<MovePiece>(out movePiece))
-            movePiece.OnPieceMoved += firstMoveDone;
+            movePiece.OnPieceStartMoving += firstMoveDone;
         else
             Debug.LogError("MovePiece not fund", gameObject);
 
@@ -24,7 +24,7 @@ public class PawnMovePattern : BasePieceMovementPattern, IPiece
     {
         if(_piece == gameObject)
         {
-            movePiece.OnPieceMoved -= firstMoveDone;
+            movePiece.OnPieceStartMoving -= firstMoveDone;
             MoveDinstance = 1;
         }
        
@@ -32,7 +32,7 @@ public class PawnMovePattern : BasePieceMovementPattern, IPiece
 
     public void OnDestroy()
     {
-        movePiece.OnPieceMoved -= firstMoveDone;
+        movePiece.OnPieceStartMoving -= firstMoveDone;
     }
 
 

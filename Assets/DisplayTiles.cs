@@ -15,7 +15,7 @@ public class DisplayTiles : MonoBehaviour // mark the tiles
 
         if (!transform.parent.TryGetComponent<PiecesData>(out pieceData)) Debug.LogError("PieceData not found", gameObject);
         pieceData.GetComponent<SelectPiece>().OnPieceSelectedEvent += MarkTiles;
-        pieceData.GetComponent<MovePiece>().OnPieceMoved += (GameObject temp, Vector2Int temp1) => isWhiteTurn = !isWhiteTurn;
+        pieceData.GetComponent<MovePiece>().OnPieceStartMoving += (GameObject temp, Vector2Int temp1) => isWhiteTurn = !isWhiteTurn;
     }
 
     public void MarkTiles(List<Vector2Int> _tiles)

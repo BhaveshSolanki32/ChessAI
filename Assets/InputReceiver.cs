@@ -25,16 +25,18 @@ public class InputReceiver : MonoBehaviour //recives input from user and selects
         if (!selectPiece.TryGetComponent<MovePiece>(out movePiece)) Debug.LogError("MovePiece not found", selectPiece.gameObject);
 
 
-        movePiece.OnPieceMoved += (GameObject temp, Vector2Int _temp2) => isPieceSelected = false;
+        movePiece.OnPieceStartMoving += (GameObject temp, Vector2Int _temp2) => isPieceSelected = false;
         selectPiece.OnPieceSelectedEvent += (List<Vector2Int> _posts) => isPieceSelected = true;
-        movePiece.OnPieceMoved += (GameObject temp, Vector2Int _temp2) => isWhiteTurn = !isWhiteTurn;
+        movePiece.OnPieceStartMoving += (GameObject temp, Vector2Int _temp2) => isWhiteTurn = !isWhiteTurn;
 
+        movePiece.OnPieceStartMoving += (GameObject _piece, Vector2Int _temp) => takeInput = !takeInput;
 
+        movePiece.OnPieceEndMoving += (GameObject _piece) => takeInput = !takeInput;
+        
         whitePieceLayer = LayerMask.GetMask("white");
         blackPieceLayer = LayerMask.GetMask("black");
 
     }
-    public void TakeInput(bool _takeInput) => takeInput = _takeInput;
 
     private void FixedUpdate()
     {

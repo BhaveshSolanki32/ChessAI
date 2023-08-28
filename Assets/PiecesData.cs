@@ -5,7 +5,7 @@ using UnityEngine;
 public class PiecesData : MonoBehaviour // holds data for player and opponents piece postion
 {
     public Dictionary<Vector2Int, GameObject> WhitePieceDict = new();
-    public Dictionary<Vector2Int, GameObject> BlackPieceDict = new();
+    public Dictionary<Vector2Int, GameObject> BlackPieceDict= new();
     [SerializeField] GameObject playerPiecesParent;
     [SerializeField] GameObject OpponentPiecesParent;
 
@@ -21,7 +21,8 @@ public class PiecesData : MonoBehaviour // holds data for player and opponents p
         }
         MovePiece _movePiece;
         if (TryGetComponent<MovePiece>(out _movePiece))
-            _movePiece.OnPieceMoved += (GameObject _piece, Vector2Int _newPost) => UpdatePiecePost(_piece.GetComponent<ChessPieceData>(), _newPost);
+            _movePiece.OnPieceStartMoving += (GameObject _piece, Vector2Int _newPost) => UpdatePiecePost(_piece.GetComponent<ChessPieceData>(), _newPost);
+
     }
 
     private void intitialAddPiecePost(ChessPieceData _chessPieceData, bool _isPlayerPost)
@@ -35,10 +36,9 @@ public class PiecesData : MonoBehaviour // holds data for player and opponents p
 
     public void UpdatePiecePost(ChessPieceData _chessPieceData, Vector2Int _newPost)
     {
-
-
+        
         bool _isPlayerPost = WhitePieceDict.ContainsKey(_chessPieceData.Post);
-
+        
         if (DoesPieceExist(_newPost, _isPlayerPost)) return;
 
 
@@ -53,6 +53,7 @@ public class PiecesData : MonoBehaviour // holds data for player and opponents p
         else
         {
             if (WhitePieceDict.ContainsKey(_newPost)) pieceCaptured(ref WhitePieceDict, _newPost);
+   
 
             BlackPieceDict.Add(_newPost, _chessPieceData.gameObject);
             BlackPieceDict.Remove(_chessPieceData.Post);
@@ -65,6 +66,7 @@ public class PiecesData : MonoBehaviour // holds data for player and opponents p
     {
         GameObject _piece = _postData[_post];
         _postData.Remove(_post);
+        
         Destroy(_piece);
     }
 
