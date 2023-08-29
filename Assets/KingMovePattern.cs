@@ -9,6 +9,11 @@ public class KingMovePattern : BasePieceMovementPattern, IPiece
 
     public List<Vector2Int> MovableTilePosts()
     {
-        return allDirectionalMovePattern(MoveDinstance, ThisPiece.Post);
+        List<Vector2Int> _tilePosts = new();
+        _tilePosts.AddRange(allDirectionalMovePattern(MoveDinstance, ThisPiece.Post));
+        _tilePosts.AddRange(allDirectionalMovePattern(MoveDinstance, ThisPiece.Post, true));
+        return _tilePosts;
+
+
     }
 }

@@ -12,24 +12,24 @@ public class AiPiecePostUpdater : MonoBehaviour
     public Tuple<Dictionary<Vector2Int, GameObject>, Dictionary<Vector2Int, GameObject>> UpdatePiecePost(GameObject _pieceGameObject, Vector2Int _newPost, Dictionary<Vector2Int, GameObject> _whitePieceDict, Dictionary<Vector2Int, GameObject> _blackPieceDict)
     {
         Vector2Int _oldPost;
-        bool _isPlayerPost;
+        bool _isWhitePost;
         if (_whitePieceDict.ContainsValue(_pieceGameObject))
         {
             _oldPost = _whitePieceDict.FirstOrDefault(x => x.Value == _pieceGameObject).Key;
-            _isPlayerPost = true;
+            _isWhitePost = true;
         }
         else
         {
-            _isPlayerPost = true;
+            _isWhitePost = false;
             _oldPost = _blackPieceDict.FirstOrDefault(x => x.Value == _pieceGameObject).Key;
         }
 
 
 
-        if (doesPieceExist(_newPost, _isPlayerPost, _whitePieceDict, _blackPieceDict)) return new(_whitePieceDict, _blackPieceDict);
+        if (doesPieceExist(_newPost, _isWhitePost, _whitePieceDict, _blackPieceDict)) return new(_whitePieceDict, _blackPieceDict);
 
 
-        if (_isPlayerPost)
+        if (_isWhitePost)
         {
             if (_blackPieceDict.ContainsKey(_newPost)) _blackPieceDict.Remove(_newPost);
 

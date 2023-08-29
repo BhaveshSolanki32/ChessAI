@@ -39,7 +39,7 @@ public class AiTurnHandler : MonoBehaviour
         float _bestMove = Mathf.NegativeInfinity;
         foreach(Tuple<Vector2Int, GameObject, int> x in _possibleMoves)
         {
-          //  Debug.Log("post = " + x.Item1 + " GO = " + x.Item2.GetComponent<IPiece>().GetType() + " score = " + x.Item3);
+          // UnityEngine.Debug.Log("new post = " + x.Item1 + " GO = " + x.Item2.GetComponent<IPiece>().GetType() + " score = " + x.Item3);
             if(_bestMove<=x.Item3)
             {
                 if (_bestMove < x.Item3) _bestPossibleMovesList = new();
@@ -54,7 +54,7 @@ public class AiTurnHandler : MonoBehaviour
         _stopWatch.Stop();
 
         UnityEngine.Debug.Log("time taken by ai = " + _stopWatch.ElapsedMilliseconds);
-
+        UnityEngine.Debug.Log(_toMovePost+"  "+_selectedPiece.GetComponent<IPiece>().GetType(), _selectedPiece);
         movePiece.MovePieceTo(_selectedPiece, _toMovePost,true);
         
     }

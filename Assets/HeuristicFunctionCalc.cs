@@ -22,7 +22,7 @@ public class HeuristicFunctionCalc : MonoBehaviour
     {
         int _blackScore=0;
         int _whiteScore=0;
-
+        
         foreach(GameObject x in _blackPiece.Values)
         {
             _blackScore += pieceValDict[x.GetComponent<IPiece>().GetType()];
