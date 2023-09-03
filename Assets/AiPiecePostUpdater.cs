@@ -8,8 +8,8 @@ public class AiPiecePostUpdater : MonoBehaviour
     [SerializeField] GameObject whiteKing;
     [SerializeField] GameObject blackKing;
 
-    //returns updated dictionary
-    public Tuple<Dictionary<Vector2Int, GameObject>, Dictionary<Vector2Int, GameObject>> UpdatePiecePost(GameObject _pieceGameObject, Vector2Int _newPost, Dictionary<Vector2Int, GameObject> _whitePieceDict, Dictionary<Vector2Int, GameObject> _blackPieceDict)
+    // updates dictionary using it's ref
+    public void UpdatePiecePost(GameObject _pieceGameObject, Vector2Int _newPost,Dictionary<Vector2Int, GameObject> _whitePieceDict, Dictionary<Vector2Int, GameObject> _blackPieceDict)
     {
         Vector2Int _oldPost;
         bool _isWhitePost;
@@ -26,7 +26,7 @@ public class AiPiecePostUpdater : MonoBehaviour
 
 
 
-        if (doesPieceExist(_newPost, _isWhitePost, _whitePieceDict, _blackPieceDict)) return new(_whitePieceDict, _blackPieceDict);
+        if (doesPieceExist(_newPost, _isWhitePost, _whitePieceDict, _blackPieceDict)) return;
 
 
         if (_isWhitePost)
@@ -43,8 +43,6 @@ public class AiPiecePostUpdater : MonoBehaviour
             _blackPieceDict.Add(_newPost, _pieceGameObject);
             _blackPieceDict.Remove(_oldPost);
         }
-
-        return new(_whitePieceDict, (_blackPieceDict));
 
     }
 

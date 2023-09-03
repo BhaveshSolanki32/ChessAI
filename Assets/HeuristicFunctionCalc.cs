@@ -14,7 +14,7 @@ public class HeuristicFunctionCalc : MonoBehaviour
         pieceValDict.Add(typeof(BishopMovePattern), 3);
         pieceValDict.Add(typeof(RookMovePattern), 5);
         pieceValDict.Add(typeof(QueenMovePattern), 9);
-        pieceValDict.Add(typeof(KingMovePattern), 999999999);
+        pieceValDict.Add(typeof(KingMovePattern), 99999);
 
     }
 
@@ -25,7 +25,8 @@ public class HeuristicFunctionCalc : MonoBehaviour
         
         foreach(GameObject x in _blackPiece.Values)
         {
-            _blackScore += pieceValDict[x.GetComponent<IPiece>().GetType()];
+            Type _pieceType = x.GetComponent<IPiece>().GetType();
+            _blackScore += (_pieceType==typeof(KingMovePattern)?(pieceValDict[_pieceType]*3): pieceValDict[_pieceType]);
         }
         foreach (GameObject x in _whitePiece.Values)
         {
