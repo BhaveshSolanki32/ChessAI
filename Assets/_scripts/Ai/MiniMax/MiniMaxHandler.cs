@@ -8,7 +8,7 @@ public class MiniMaxHandler : MonoBehaviour, IMiniMax
     AiPiecePostUpdater aiPiecePostUpdater;
 
     HeuristicFunctionCalc heuristicFunctionCalc;
-
+    Dictionary<GameObject, IPiece> gameObjectIPieceDict= new();
 
     private void Awake()
     {
@@ -19,11 +19,11 @@ public class MiniMaxHandler : MonoBehaviour, IMiniMax
     //returns list of all posible moves with thier scores
     public void GetBestMoves(Dictionary<Vector2Int, GameObject> _blackPieceDict, Dictionary<Vector2Int, GameObject> _whitePieceDict, int _depth, List<Tuple<Vector2Int, GameObject, float>> _possibleMoves)
     {
-
+        updateGameObjectIpieceDict(_whitePieceDict,_blackPieceDict);
 
         foreach (Vector2Int x in _blackPieceDict.Keys)
         {
-            List<Vector2Int> _movableTiles = _blackPieceDict[x].GetComponent<IPiece>().MovableTilePosts(x, _whitePieceDict,_blackPieceDict);
+            List<Vector2Int> _movableTiles = gameObjectIPieceDict[_blackPieceDict[x]].MovableTilePosts(x, _whitePieceDict,_blackPieceDict);
             foreach (Vector2Int y in _movableTiles)
             {
                 Dictionary<Vector2Int, GameObject> _newBlackPiece = new(_blackPieceDict);
@@ -50,6 +50,14 @@ public class MiniMaxHandler : MonoBehaviour, IMiniMax
         disposeVar(_blackPieceDict);
     }
 
+    private void updateGameObjectIpieceDict(Dictionary<Vector2Int, GameObject> _whitePieceDict, Dictionary<Vector2Int, GameObject> _blackPieceDict)
+    {
+        gameObjectIPieceDict.Clear();
+        foreach (GameObject x in _whitePieceDict.Values) gameObjectIPieceDict.Add(x, x.GetComponent<IPiece>());
+        foreach (GameObject x in _blackPieceDict.Values) gameObjectIPieceDict.Add(x, x.GetComponent<IPiece>());
+
+    }
+
     //recursively performs minimax to the desired depth
     float miniMaxFindBestMove(Dictionary<Vector2Int, GameObject> _blackPieceDict, Dictionary<Vector2Int, GameObject> _whitePieceDict, int _depth, bool _isWhiteTurn, float _alpha, float _beta)
     {
@@ -59,13 +67,13 @@ public class MiniMaxHandler : MonoBehaviour, IMiniMax
         if (_depth < 1 || aiPiecePostUpdater.IsKingDead(_whitePieceDict, _blackPieceDict))
         {
 
-            _score = heuristicFunctionCalc.CalcHeuristics(_blackPieceDict, _whitePieceDict);
+            _score = heuristicFunctionCalc.CalcHeuristics(_blackPieceDict, _whitePieceDict,gameObjectIPieceDict);
             return _score;
         }
         Dictionary<Vector2Int, GameObject> _toCheckDict = (_isWhiteTurn) ? (_whitePieceDict) : (_blackPieceDict);
         foreach (Vector2Int x in _toCheckDict.Keys)
         {
-            List<Vector2Int> _movableTiles = _toCheckDict[x].GetComponent<IPiece>().MovableTilePosts(x,_whitePieceDict,_blackPieceDict);
+            List<Vector2Int> _movableTiles = gameObjectIPieceDict[_toCheckDict[x]].MovableTilePosts(x,_whitePieceDict,_blackPieceDict);
             foreach (Vector2Int y in _movableTiles)
             {
 

@@ -23,7 +23,7 @@ public class MaterialAdvantage : MonoBehaviour
 
     }
 
-    public float Calculate(Dictionary<Vector2Int, GameObject> _whitePiece, Dictionary<Vector2Int, GameObject> _blackPiece)
+    public float Calculate(Dictionary<Vector2Int, GameObject> _whitePiece, Dictionary<Vector2Int, GameObject> _blackPiece, Dictionary<GameObject, IPiece> _gameObjectIpieceDict)
     {
 
         int _blackScore = 0;
@@ -31,14 +31,14 @@ public class MaterialAdvantage : MonoBehaviour
 
         foreach (GameObject x in _blackPiece.Values)
         {
-            Type _pieceType = x.GetComponent<IPiece>().GetType();
+            Type _pieceType = _gameObjectIpieceDict[x].GetType();
             _blackScore += (_pieceType == typeof(KingMovePattern) ? (pieceValDict[_pieceType] * 3) : pieceValDict[_pieceType]);
         }
         foreach (GameObject x in _whitePiece.Values)
         {
-            _whiteScore += pieceValDict[x.GetComponent<IPiece>().GetType()];
+            _whiteScore += pieceValDict[_gameObjectIpieceDict[x].GetType()];
         }
-        return (_blackScore - _whiteScore)/maxScore;
+        return (_blackScore - _whiteScore)/maxScore; //normalized score
 
     }
 

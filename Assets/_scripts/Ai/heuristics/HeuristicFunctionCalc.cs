@@ -20,11 +20,11 @@ public class HeuristicFunctionCalc : MonoBehaviour
 
 
 
-    public float CalcHeuristics(Dictionary<Vector2Int, GameObject> _blackPiece, Dictionary<Vector2Int, GameObject> _whitePiece)
+    public float CalcHeuristics(Dictionary<Vector2Int, GameObject> _blackPiece, Dictionary<Vector2Int, GameObject> _whitePiece, Dictionary<GameObject, IPiece> _gameObjectIpieceDict)
     {
         HeuristicCalled++;
-        float _materialAdvantage = materialAdvantage.Calculate(_whitePiece, _blackPiece);
-          float _pieceMobility = pieceMobility.Calculate(_whitePiece, _blackPiece);
+        float _materialAdvantage = materialAdvantage.Calculate(_whitePiece, _blackPiece, _gameObjectIpieceDict);
+          float _pieceMobility = pieceMobility.Calculate(_whitePiece, _blackPiece, _gameObjectIpieceDict);
 
         return _materialAdvantage * MaterialAdvantageBias+ _pieceMobility * PieceMobilityBias;
     }
