@@ -12548,6 +12548,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6d242985a826904f9e38387bba4c506, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AiAdvantageImportanceToEnemy: 1.6
 --- !u!1 &1631162508
 GameObject:
   m_ObjectHideFlags: 0
