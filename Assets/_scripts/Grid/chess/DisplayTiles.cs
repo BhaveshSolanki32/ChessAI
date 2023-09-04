@@ -7,13 +7,13 @@ public class DisplayTiles : MonoBehaviour // mark the tiles
 {
     List<GameObject> previouslySelectedTiles = new();
     [SerializeField] GridData gridData;
-    private PiecesData pieceData;
+    private PiecesDictsData pieceData;
     bool isWhiteTurn = true;
 
     private void Awake()
     {
 
-        if (!transform.parent.TryGetComponent<PiecesData>(out pieceData)) Debug.LogError("PieceData not found", gameObject);
+        if (!transform.parent.TryGetComponent<PiecesDictsData>(out pieceData)) Debug.LogError("PieceData not found", gameObject);
         pieceData.GetComponent<SelectPiece>().OnPieceSelectedEvent += MarkTiles;
         pieceData.GetComponent<MovePiece>().OnPieceStartMoving += (GameObject temp, Vector2Int temp1) => isWhiteTurn = !isWhiteTurn;
     }

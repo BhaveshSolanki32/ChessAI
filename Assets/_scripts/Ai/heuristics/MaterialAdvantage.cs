@@ -7,6 +7,7 @@ public class MaterialAdvantage : MonoBehaviour
 
     Dictionary<Type, int> pieceValDict = new();
     int maxScore = 0;
+    public float AiAdvantageImportanceToEnemy=1.6f;
 
     private void Awake()
     {
@@ -38,7 +39,7 @@ public class MaterialAdvantage : MonoBehaviour
         {
             _whiteScore += pieceValDict[_gameObjectIpieceDict[x].GetType()];
         }
-        return (_blackScore - _whiteScore)/maxScore; //normalized score
+        return (_blackScore*AiAdvantageImportanceToEnemy - _whiteScore)/maxScore; //normalized score
 
     }
 

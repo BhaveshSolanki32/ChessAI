@@ -5,12 +5,12 @@ public class BasePieceMovementPattern : MonoBehaviour //contains function for co
 {
     public ChessPieceData ThisPiece { get; set; }
     protected GridData gridData;
-    protected PiecesData pieceData;
+    protected PiecesDictsData pieceData;
     protected virtual void Awake()
     {
         ThisPiece = GetComponent<ChessPieceData>();
         gridData = ThisPiece.GridData;
-        if (!transform.root.TryGetComponent<PiecesData>(out pieceData))
+        if (!transform.root.TryGetComponent<PiecesDictsData>(out pieceData))
             Debug.LogError("PieceData not found");
     }
     protected virtual List<Vector2Int> fixedDirectionalMovePattern(int _moveDistance, Vector2Int _piecePost, Vector2Int _directionVector, Dictionary<Vector2Int, GameObject> _whitePieceDict, Dictionary<Vector2Int, GameObject> _blackPieceDict )

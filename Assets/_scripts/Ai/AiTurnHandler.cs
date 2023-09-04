@@ -7,7 +7,7 @@ using UnityEngine;
 public class AiTurnHandler : MonoBehaviour
 {
     [SerializeField] GameObject pieceGameObject;
-    PiecesData piecesData;
+    PiecesDictsData piecesData;
     MovePiece movePiece;
     public int Depth = 5;
     private void Awake()
@@ -16,7 +16,7 @@ public class AiTurnHandler : MonoBehaviour
         if (pieceGameObject.TryGetComponent<MovePiece>(out movePiece)) movePiece.OnPieceEndMoving += initialize;
         else UnityEngine.Debug.LogError("MovePiece not found", pieceGameObject);
 
-        if (!pieceGameObject.TryGetComponent<PiecesData>(out piecesData))
+        if (!pieceGameObject.TryGetComponent<PiecesDictsData>(out piecesData))
             UnityEngine.Debug.LogError("PieceData not found", pieceGameObject);
 
     }

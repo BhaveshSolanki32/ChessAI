@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PiecesData))]
+[RequireComponent(typeof(PiecesDictsData))]
 public class MovePiece : MonoBehaviour //moves the piece to the desired postion and updates data with an event
 {
     [SerializeField] float speed=0.3f;

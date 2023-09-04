@@ -90,24 +90,32 @@ public class PawnMovePattern : BasePieceMovementPattern, IPiece
         return _tilesPost;
     }
 
-    void checkPawnAttackLocations(ref List<Vector2Int> _tiles, bool _isWhiteTurn, Vector2Int _post, Dictionary<Vector2Int, GameObject> _whitePieceDict, Dictionary<Vector2Int, GameObject> _blackPieceDict,  int _moveDir=1)
+    void checkPawnAttackLocations(ref List<Vector2Int> _tiles, bool _isWhitePost, Vector2Int _post, Dictionary<Vector2Int, GameObject> _whitePieceDict, Dictionary<Vector2Int, GameObject> _blackPieceDict,  int _moveDir=1)
     {
-        if (_isWhiteTurn) //is white piece
+        Dictionary<Vector2Int, GameObject> _oppponentPieceDict = new();
+
+        if (_isWhitePost)
+        {
             _moveDir = 1;
+            _oppponentPieceDict = _blackPieceDict;
+        }
         else
+        {
             _moveDir = -1;
+            _oppponentPieceDict = _whitePieceDict;
+        }
 
         List<Vector2Int> _capturePosts = base.fixedDirectionalMovePattern(1, _post, new(1, 1 * _moveDir),_whitePieceDict,_blackPieceDict); //checking for location pawn can capture
 
-        if(_capturePosts.Count>0)
-            if (pieceData.DoesPieceExist(_capturePosts[0], !_isWhiteTurn))
-                _tiles.Add(_capturePosts[0]);
+        for(int i = 0; i <= 1; i++)
+        {
+            if (_capturePosts.Count > 0)
+                if (_oppponentPieceDict.ContainsKey(_capturePosts[0]))
+                    _tiles.Add(_capturePosts[0]);
 
-        _capturePosts = base.fixedDirectionalMovePattern(1, _post, new(-1, 1 * _moveDir),_whitePieceDict,_blackPieceDict); //checking for location pawn can capture
+            _capturePosts = base.fixedDirectionalMovePattern(1, _post, new(-1, 1 * _moveDir), _whitePieceDict, _blackPieceDict); //checking for location pawn can capture
+        }
 
-        if (_capturePosts.Count > 0)
-            if (pieceData.DoesPieceExist(_capturePosts[0], !_isWhiteTurn))
-                _tiles.Add(_capturePosts[0]);
 
     }
 

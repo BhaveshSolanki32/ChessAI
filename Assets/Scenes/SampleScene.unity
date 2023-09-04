@@ -12496,6 +12496,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaterialAdvantageBias: 10
   PieceMobilityBias: 3.5
+  HeuristicCalled: 0
 --- !u!114 &1611783029
 MonoBehaviour:
   m_ObjectHideFlags: 0

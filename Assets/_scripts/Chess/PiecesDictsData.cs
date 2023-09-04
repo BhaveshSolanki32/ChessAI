@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MovePiece), typeof(SelectPiece))]
-public class PiecesData : MonoBehaviour // holds data for player and opponents piece postion
+public class PiecesDictsData : MonoBehaviour // holds data for player and opponents piece postion and updates it
 {
     public Dictionary<Vector2Int, GameObject> WhitePieceDict = new();
     public Dictionary<Vector2Int, GameObject> BlackPieceDict= new();

@@ -4,7 +4,7 @@ using UnityEngine;
 public class ModeChanger : MonoBehaviour
 {
     public Action<bool> OnModeChange;
-    [SerializeField] PiecesData piecesData;
+    [SerializeField] PiecesDictsData piecesData;
     [SerializeField] GameObject aiGameObject;
 
     public void ChangeMode(bool _isVsAi)
