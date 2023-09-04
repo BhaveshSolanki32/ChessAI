@@ -44,6 +44,7 @@ public class AiPiecePostUpdater : MonoBehaviour
             _blackPieceDict.Remove(_oldPost);
         }
 
+        
     }
 
     bool doesPieceExist(Vector2Int _post, bool _isPlayerPost,  Dictionary<Vector2Int, GameObject> _whitePieceDict,  Dictionary<Vector2Int, GameObject> _blackPieceDict)

@@ -6,14 +6,14 @@ public class KnightMovePattern : BasePieceMovementPattern, IPiece
 {
     public int MoveDinstance { get; set; } = 3;
 
-    public List<Vector2Int> MovableTilePosts()
+    public List<Vector2Int> MovableTilePosts(Vector2Int _post, Dictionary<Vector2Int, GameObject> _whitePieceDict, Dictionary<Vector2Int, GameObject> _blackPieceDict)
     {
-        List<Vector2Int> _tilePost = allDirectionalMovePattern(MoveDinstance - 1, ThisPiece.Post);
+        List<Vector2Int> _tilePost = allDirectionalMovePattern(MoveDinstance - 1, _post,_whitePieceDict, _blackPieceDict);
 
         return _tilePost;
     }
 
-    protected override List<Vector2Int> allDirectionalMovePattern(int _moveDistance, Vector2Int _piecePost, bool _isDiagonalMovement = false)
+    protected override List<Vector2Int> allDirectionalMovePattern(int _moveDistance, Vector2Int _piecePost, Dictionary<Vector2Int, GameObject> _whitePieceDict, Dictionary<Vector2Int, GameObject> _blackPieceDict , bool _isDiagonalMovement = false)
     {
         List<Vector2Int> _tilesPost = new();
 
