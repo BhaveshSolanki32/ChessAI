@@ -35,6 +35,12 @@ public class AiTurnHandler : MonoBehaviour
 
         if (_blackPiece.ContainsValue(_piece)) return; //it was black's turns previously
 
+
+        byte[,] _pieceMatrix = new byte[8, 8];
+        Dictionary<byte, IPiece> _iPieceValueDict = new();
+
+        createPieceMatrix(_pieceMatrix, _whitePiece, _blackPiece,_iPieceValueDict);
+
         List<Tuple<Vector2Int, GameObject, float>> _possibleMoves = new();
         GetComponent<IMiniMax>().GetBestMoves(_blackPiece, _whitePiece, Depth, _possibleMoves);
 
@@ -62,6 +68,23 @@ public class AiTurnHandler : MonoBehaviour
         UnityEngine.Debug.Log("time taken by ai = " + _stopWatch.ElapsedMilliseconds);
         UnityEngine.Debug.Log(_toMovePost + "  " + _selectedPiece.GetComponent<IPiece>().GetType() + "score = " + _bestMove, _selectedPiece);
         movePiece.MovePieceTo(_selectedPiece, _toMovePost, true);
+
+
+    }
+
+    private void createPieceMatrix(byte[,] _pieceMatrix, Dictionary<Vector2Int, GameObject> _whitePiece, Dictionary<Vector2Int, GameObject> _blackPiece, Dictionary<byte, IPiece> _iPieceValueDict)
+    {
+        byte _pieceValue = 1;
+        foreach (Vector2Int x in _whitePiece.Keys)
+        {
+            _pieceMatrix[x.x, x.y] = _pieceValue++;
+            _iPieceValueDict.Add(_pieceValue, _whitePiece[x].GetComponent<IPiece>());
+        }
+        foreach (Vector2Int x in _blackPiece.Keys)
+        {
+            _pieceMatrix[x.x, x.y] = _pieceValue++;
+            _iPieceValueDict.Add(_pieceValue, _blackPiece[x].GetComponent<IPiece>());
+        }
 
 
     }

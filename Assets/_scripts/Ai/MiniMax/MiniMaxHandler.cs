@@ -40,7 +40,6 @@ public class MiniMaxHandler : MonoBehaviour, IMiniMax
                 _possibleMoves.Add(new(y, _blackPieceDict[x], _newScore));
                 GC.Collect();
                 GC.Collect();
-                GC.Collect();
 
             }
             disposeVar(_movableTiles);

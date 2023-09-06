@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +9,6 @@ public class PiecesDictsData : MonoBehaviour // holds data for player and oppone
     public Dictionary<Vector2Int, GameObject> BlackPieceDict= new();
     [SerializeField] GameObject playerPiecesParent;
     [SerializeField] GameObject OpponentPiecesParent;
-
     private void Awake()
     {
         foreach (ChessPieceData x in playerPiecesParent.transform.GetComponentsInChildren<ChessPieceData>())
@@ -17,6 +17,7 @@ public class PiecesDictsData : MonoBehaviour // holds data for player and oppone
         }
         foreach (ChessPieceData x in OpponentPiecesParent.transform.GetComponentsInChildren<ChessPieceData>())
         {
+
             intitialAddPiecePost(x, false);
         }
         MovePiece _movePiece;
@@ -24,6 +25,7 @@ public class PiecesDictsData : MonoBehaviour // holds data for player and oppone
             _movePiece.OnPieceStartMoving += (GameObject _piece, Vector2Int _newPost) => UpdatePiecePost(_piece.GetComponent<ChessPieceData>(), _newPost);
 
     }
+
 
     private void intitialAddPiecePost(ChessPieceData _chessPieceData, bool _isPlayerPost)
     {
