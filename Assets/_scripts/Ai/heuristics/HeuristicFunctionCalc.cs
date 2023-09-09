@@ -24,9 +24,9 @@ public class HeuristicFunctionCalc : MonoBehaviour
     {
         HeuristicCalled++;
         float _materialAdvantage = materialAdvantage.Calculate(_whitePiece, _blackPiece, _gameObjectIpieceDict);
-          float _pieceMobility = pieceMobility.Calculate(_whitePiece, _blackPiece, _gameObjectIpieceDict);
+        //   float _pieceMobility = pieceMobility.Calculate(_whitePiece, _blackPiece, _gameObjectIpieceDict);
 
-        return _materialAdvantage * MaterialAdvantageBias+ _pieceMobility * PieceMobilityBias;
+        return _materialAdvantage * MaterialAdvantageBias;// + _pieceMobility * PieceMobilityBias;
     }
 
     

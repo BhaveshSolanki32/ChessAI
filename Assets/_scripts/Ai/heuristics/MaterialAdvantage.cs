@@ -39,7 +39,7 @@ public class MaterialAdvantage : MonoBehaviour
         {
             _whiteScore += pieceValDict[_gameObjectIpieceDict[x].GetType()];
         }
-        return (_blackScore*AiAdvantageImportanceToEnemy - _whiteScore)/maxScore; //normalized score
+        return (_blackScore*AiAdvantageImportanceToEnemy - _whiteScore);
 
     }
 

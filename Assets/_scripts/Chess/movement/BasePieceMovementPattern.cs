@@ -13,6 +13,7 @@ public class BasePieceMovementPattern : MonoBehaviour //contains function for co
         if (!transform.root.TryGetComponent<PiecesDictsData>(out pieceData))
             Debug.LogError("PieceData not found");
     }
+
     protected virtual List<Vector2Int> fixedDirectionalMovePattern(int _moveDistance, Vector2Int _piecePost, Vector2Int _directionVector, Dictionary<Vector2Int, GameObject> _whitePieceDict, Dictionary<Vector2Int, GameObject> _blackPieceDict )
     {
         List<Vector2Int> _tilesPost = new();

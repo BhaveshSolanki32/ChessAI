@@ -18,7 +18,7 @@ public class PieceMobility : MonoBehaviour
         foreach (Vector2Int x in _blackPieceDict.Keys) _blackScore += _gameObjectIpieceDict[_blackPieceDict[x]].MovableTilePosts(x, _whitePieceDict, _blackPieceDict).Count;
 
 
-        return (_blackScore - (_whiteScore*AiMobilityImportanceComparedToenemy))/maxScore;//nomalized score
+        return (_blackScore - (_whiteScore*AiMobilityImportanceComparedToenemy));
 
     }
 }
