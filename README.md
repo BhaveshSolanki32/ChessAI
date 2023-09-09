@@ -81,9 +81,6 @@ The higher the score the better the game sate or postion is considerd. (Currentl
 * Alpha-Beta pruning significantly reduces the search space and is especially valuable in deep or complex game trees, making it a fundamental technique in game-playing AI, such as chess engines.
 
 #### Other optimization
-
-* **Reducing Data size:** instead of using Dictionary<Vector2Int, GameObject> that whole game uses because of its ease of use and expandibilty the AI uses a 8 X 8 matrix of byte that stores the piece at thier postions. This helps a lot with the memory issue and has significant impact on processing, as passing the whole Dictionary again and again and many times creating its copies was very unoptimized.
-
 * **disposing variables:** disposing the variables after they go out of scope is done by garbage collector but since all the operation Currently happens in single frame, we have to manually clear the Dictionary, also call the garbage collector manually to free some memory. This adds to the processing time but keeps the moemory usage in check.
 
 
@@ -132,7 +129,7 @@ The higher the score the better the game sate or postion is considerd. (Currentl
 <a name="plans"></a>
 ## Future plans
 
-* **Optimization:** At the current stage lot optimization can be used to improve the Ai and make it more performant like move ordering (exploring better moves first) can significantly improve alpha beta pruning, time based deepening it can help us to remain in time limit and without compromising a lot on the output.
+* **Optimization:** At the current stage lot optimization can be used to improve the Ai and make it more performant like move ordering (exploring better moves first) can significantly improve alpha beta pruning, time based deepening it can help us to remain in time limit and without compromising a lot on the output. Using less complicated data structures like array of byte to store piece post can help in memory issues and can have a significant impact on processing speed(but this will require to change a lot about the project).
 
 * **Multithreading:** (in progress) Multithreading can help significantly improve the performance and speed by parallelizing the task and dividing the tree into seveeral other smaller tree and solving them simultaneously. 
 
