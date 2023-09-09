@@ -27,7 +27,6 @@ The algorithm has mainly 2 component minimax algo which creates and traverse pos
 Minimax is a tree searching algorithm, popular for it's use in strategy turn based games like chess, tic tac toe etc. 
 It is fundamental for creating intelligent game-playing agents that can make optimal decisions.
 
-### How Minimax Works
 At its core, Minimax seeks to find the best possible move for a player by considering both its own and the opponent's potential moves. It operates as follows:
 
 1. **Tree Generation**: The algorithm constructs a game tree that represents all possible moves and counter-moves for a given depth. Each level of the tree alternates between the player's and the opponent's turn.
