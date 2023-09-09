@@ -15,7 +15,7 @@ The game consist of 2 mode "human vs human" and "human vs AI".
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2. <a href="#heuristic">Heuristic function</a>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3. <a href="#alphaBeta">Alpha beta pruning and other optimization</a>
-- <a href="#keyFeatures">Key features</a>
+- <a href="#keyFetures">Key features</a>
 - <a href="#installation">Installation</a>
 - <a href="#flow">Code flow</a>
 - <a href="#plans">Future plan</a>
