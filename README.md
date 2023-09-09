@@ -7,25 +7,33 @@ The game consist of 2 mode "human vs human" and "human vs AI".
 
 ## Table of content
 
-- [About](#About)
-- [Screenshots/gifs](#Project-screenshots/GIFs)
-- [Key features](#Key-features)
-- [Installation](#Installation)
-- [Usage](#Usage)
-- [Code overview](#Code-overview)
-- [Future plan](#Future-plan)
-- [Acknowledgement](#Acknowledgement)
+- <a href="#about">About</a>
+- <a href="#project-screenshots/gifs">Screenshots/gifs</a>
+- <a href="#HowAlgo">How the AI Algorithm works and its optimization</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1. <a href="#miniMax">MiniMax Algorithm</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2. <a href="#heuristic">Heuristic function</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3. <a href="#alphaBeta">Alpha beta pruning and other optimization</a>
+- <a href="#keyFeatures">Key features</a>
+- <a href="#installation">Installation</a>
+- <a href="#flow">Code flow</a>
+- <a href="#plans">Future plan</a>
+- <a href="#Acknowledgement">Acknowledgement</a>
+
+<a name="about"></a>
 ## About
 The project implements the classic game of chess along with an AI that utilizes the minimax algorithm.
 
 The minimax algorithm constructs a tree where each node represents a potential game state. The algorithm traverses this tree to a defined depth. Once it reaches the maximum depth, it calculates a score for each leaf node using a heuristic function. Currently, the heuristic function calculates material advantage and piece mobility. (Note that the heuristic function will be expanded in future updates). And traverse up the tree to give the score to each root node.
 
 Feel free to reach out if you have any questions or need further information! 
+
+<a name="project-screenshots/gifs"></a>
 ## Project screenshots/GIFs
+<a name="HowAlgo"></a>
 ## How the AI Algorithm works and its optimization
 
 The algorithm has mainly 2 component minimax algo which creates and traverse possiblity tree and a heuristic function that calculates score for a given board. Currently the heuristic function  considers piece mobility and material advantage. 
-
+<a name="miniMax"></a>
 ### Minimax algorithm
 Minimax is a tree searching algorithm, popular for its use in strategy turn based games like chess, tic tac toe etc. 
 It is fundamental for creating intelligent game-playing agents that can make optimal decisions.
@@ -42,6 +50,7 @@ At its core, Minimax seeks to find the best possible move for a player by consid
 
 5. **Depth-Limited Search**: Minimax can be computationally expensive for deep trees, so it is often combined with depth-limited search or pruning techniques like Alpha-Beta pruning to improve performance.
 
+<a name="heuristic"></a>
 ### Heuristic function
 Heuristic function  is used for evaluating state of the game based on various factors like piece mobility and material advantage.
 
@@ -58,7 +67,7 @@ Here, fi represents the score returned by various evaluation factors (such as pi
 The heuristic function computes a score for each game state by applying this formula. The weights (wi) associated with each evaluation factor allow you to fine-tune the importance of these factors in the overall evaluation. Adjusting these weights can significantly impact the AI's decision-making process, enabling you to prioritize certain aspects of the game state based on your strategic objectives. 
 
 The higher the score the better the game sate or postion is considerd. (Currently the heuristic function is not well tuned).
-
+<a name="alphaBeta"></a>
 ### Alpha Beta pruning and other optimization
 
 #### Alpha beta pruning
@@ -77,7 +86,7 @@ The higher the score the better the game sate or postion is considerd. (Currentl
 
 
 
-
+<a name="keyFetures"></a>
 ## Key features
 * **Grid generation system** for spawning map tiles as gameobjects, with an editor script to help generate tileset in editor mode based on given parameters.
 * **Chess game** with complete implementation of pieces movement/ legal moves, players turn handler,enemy piece capture etc. 
@@ -86,6 +95,7 @@ The higher the score the better the game sate or postion is considerd. (Currentl
 * **Minimax AI** the project successfully implements chess ai using minimax algorithm 
 
 * **Heuristic function** uses currently uses 2 methods to calculate the score  of the chess game state namely piece mobility, material advantage.
+<a name="installation"></a>
 ## Installation
 
 #### Build/final game
@@ -96,7 +106,9 @@ The higher the score the better the game sate or postion is considerd. (Currentl
 1. Download the github repo. 
 2. Open unity hub add the downloaded project. 
 3. Open the project using unity 2021.3.16f1.
-4. You are all set to play around and explore the project
+4. You are all set to play around and explore the project.
+
+<a name="flow"></a>
 ## Code flow/Key scripts
 
 1. **InputReceiver** reads an input from the user and forwards it to **InputTaskHandler**. 
@@ -114,6 +126,8 @@ The higher the score the better the game sate or postion is considerd. (Currentl
 7. **IMiniMax** returns a list of all root node of the minimax tree with score so **AiTurnHandler** can decide the which move to play based on difficulty. 
 
 8. After getting the list possible moves with scores (currently AI chooses best move). It calls **MovePiece** to move the piece.
+
+<a name="plans"></a>
 ## Future plans
 
 * **Optimization:** At the current stage lot optimization can be used to improve the Ai and make it more performant like move ordering (exploring better moves first) can significantly improve alpha beta pruning, time based deepening it can help us to remain in time limit and without compromising a lot on the output.
@@ -127,11 +141,13 @@ The higher the score the better the game sate or postion is considerd. (Currentl
 * **Developer menu:** Developer menu will be used for setting depth, chnaging biases, turning heuristic function methods on/off etc.
 
 * **Difficulty adjustment:** Adding Difficulty adjuster for player to choose between the difficulty for which the ai will out the move accordingly.
+
+<a name="Acknowledgement"></a>
 ## Acknowledgement
 
 
  * [Algorithms Explained – minimax and alpha-beta pruning by Sebastian lague](https://www.youtube.com/watch?v=l-hh51ncgDI)
 
-  * [Chess pieces art by John Pablok](https://opengameart.org/content/chess-pieces-and-board-squares)
+ * [Chess pieces art by John Pablok](https://opengameart.org/content/chess-pieces-and-board-squares)
  
 
