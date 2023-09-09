@@ -16,15 +16,18 @@ The game consist of 2 mode "human vs human" and "human vs AI".
 - [Future plan](#Future-plan)
 - [Acknowledgement](#Acknowledgement)
 ## About
-The project implements the classic game of chess with it's AI which implementes using minimax algorithm.
-The minimax algorithm creates a tree where each node represent a possible game state the algorithm goes to certain defined depth after reaching to max depth it calculates a score for each node at leaf stage using a heuristic function currently the function calculates the material advantage and piece mobility (heuristic function will be expanded with further updates). 
+The project implements the classic game of chess along with an AI that utilizes the minimax algorithm.
+
+The minimax algorithm constructs a tree where each node represents a potential game state. The algorithm traverses this tree to a defined depth. Once it reaches the maximum depth, it calculates a score for each leaf node using a heuristic function. Currently, the heuristic function calculates material advantage and piece mobility. (Note that the heuristic function will be expanded in future updates). And traverse up the tree to give the score to each root node.
+
+Feel free to reach out if you have any questions or need further information! 
 ## Project screenshots/GIFs
-## How the Algorithm works
+## How the AI Algorithm works and its optimization
 
 The algorithm has mainly 2 component minimax algo which creates and traverse possiblity tree and a heuristic function that calculates score for a given board. Currently the heuristic function  considers piece mobility and material advantage. 
 
 ### Minimax algorithm
-Minimax is a tree searching algorithm, popular for it's use in strategy turn based games like chess, tic tac toe etc. 
+Minimax is a tree searching algorithm, popular for its use in strategy turn based games like chess, tic tac toe etc. 
 It is fundamental for creating intelligent game-playing agents that can make optimal decisions.
 
 At its core, Minimax seeks to find the best possible move for a player by considering both its own and the opponent's potential moves. It operates as follows:
@@ -55,6 +58,26 @@ Here, fi represents the score returned by various evaluation factors (such as pi
 The heuristic function computes a score for each game state by applying this formula. The weights (wi) associated with each evaluation factor allow you to fine-tune the importance of these factors in the overall evaluation. Adjusting these weights can significantly impact the AI's decision-making process, enabling you to prioritize certain aspects of the game state based on your strategic objectives. 
 
 The higher the score the better the game sate or postion is considerd. (Currently the heuristic function is not well tuned).
+
+### Alpha Beta pruning and other optimization
+
+#### Alpha beta pruning
+
+* Alpha-Beta pruning is an optimization technique used in minimax algorithms to reduce the number of nodes evaluated in a search tree.
+* It aims to minimize the number of nodes explored by pruning branches of the tree that are guaranteed to be worse than the current best move.
+* Alpha and Beta are two values that represent the minimum score a maximizing player is assured of and the maximum score a minimizing player is assured of, respectively. 
+* When traversing the tree, if a node's evaluation falls outside the range defined by Alpha and Beta for its parent node. For a maximizing player, if Alpha becomes greater or equal to Beta, the search can be pruned. For a minimizing player, if Beta becomes less than or equal to Alpha, pruning can occur.
+* Alpha-Beta pruning significantly reduces the search space and is especially valuable in deep or complex game trees, making it a fundamental technique in game-playing AI, such as chess engines.
+
+#### Other optimization
+
+* **Reducing Data size:** instead of using Dictionary<Vector2Int, GameObject> that whole game uses because of its ease of use and expandibilty the AI uses a 8 X 8 matrix of byte that stores the piece at thier postions. This helps a lot with the memory issue and has significant impact on processing, as passing the whole Dictionary again and again and many times creating its copies was very unoptimized.
+
+* **disposing variables:** disposing the variables after they go out of scope is done by garbage collector but since all the operation Currently happens in single frame, we have to manually clear the Dictionary, also call the garbage collector manually to free some memory. This adds to the processing time but keeps the moemory usage in check.
+
+
+
+
 ## Key features
 * **Grid generation system** for spawning map tiles as gameobjects, with an editor script to help generate tileset in editor mode based on given parameters.
 * **Chess game** with complete implementation of pieces movement/ legal moves, players turn handler,enemy piece capture etc. 
@@ -84,7 +107,7 @@ The higher the score the better the game sate or postion is considerd. (Currentl
 
 4. Once the player clicks on the tile player can move to **InputTaskHandler** calls **MovePiece**. Which Moves the Piece to desired location and triggers event that tells the game a piece is moved.  It is this event that tells the game the player chance has ended.
 
-5. In human vs human game the **InputReceiver** switches it's raycasting layer to different player pieces so it only takes input for that player.
+5. In human vs human game the **InputReceiver** switches its raycasting layer to different player pieces so it only takes input for that player.
 
 6. In a human vs AI the **MovePiece** called event triggers a function in **AiTurnHandler** that collects all the requirement for the AI and forwards it to an Interface **IMiniMax** which is implemented by all minimax scripts (we have different minimax scripts for different types of minimax like one that implementes jobs, another is simple minimax).
 
