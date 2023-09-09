@@ -6,12 +6,14 @@ The game consist of 2 mode "human vs human" and "human vs AI".
 
 
 ## Table of content
-
 - <a href="#about">About</a>
 - <a href="#project-screenshots/gifs">Screenshots/gifs</a>
 - <a href="#HowAlgo">How the AI Algorithm works and its optimization</a>
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1. <a href="#miniMax">MiniMax Algorithm</a>
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2. <a href="#heuristic">Heuristic function</a>
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3. <a href="#alphaBeta">Alpha beta pruning and other optimization</a>
 - <a href="#keyFeatures">Key features</a>
 - <a href="#installation">Installation</a>
