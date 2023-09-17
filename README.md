@@ -31,6 +31,10 @@ Feel free to reach out if you have any questions or need further information!
 
 <a name="project-screenshots/gifs"></a>
 ## Project screenshots/GIFs
+### Human vs AI
+![ezgif com-video-to-gif (1)](https://github.com/BhaveshSolanki32/ChessAI/assets/66202955/b55a75c9-2f26-41f8-a731-247c4533af93)
+### Human vs Human
+![ezgif com-video-to-gif](https://github.com/BhaveshSolanki32/ChessAI/assets/66202955/7cb0c7d0-c653-4d86-8ac8-2639b803cc31)
 <a name="HowAlgo"></a>
 ## How the AI Algorithm works and its optimization
 
