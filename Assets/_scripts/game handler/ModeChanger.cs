@@ -3,20 +3,21 @@ using UnityEngine;
 
 public class ModeChanger : MonoBehaviour
 {
+    [SerializeField] PiecesDictsData _piecesData;
+    [SerializeField] GameObject _aiGameObject;
     public Action<bool> OnModeChange;
-    [SerializeField] PiecesDictsData piecesData;
-    [SerializeField] GameObject aiGameObject;
 
-    public void ChangeMode(bool _isVsAi)
+
+    public void ChangeMode(bool isVsAi)
     {
-        OnModeChange?.Invoke(_isVsAi);
-        if (!_isVsAi)
+        OnModeChange?.Invoke(isVsAi);
+        if (!isVsAi)
         {
-            foreach (GameObject x in piecesData.BlackPieceDict.Values)
+            foreach (var x in _piecesData.BlackPieceDict.Values)
             {
                 x.AddComponent<BoxCollider2D>();
             }
-            Destroy(aiGameObject);
+            Destroy(_aiGameObject);
         }
             
     }

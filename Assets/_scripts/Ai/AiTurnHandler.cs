@@ -6,69 +6,71 @@ using UnityEngine;
 [RequireComponent(typeof(HeuristicFunctionCalc), typeof(IMiniMax))]
 public class AiTurnHandler : MonoBehaviour
 {
-    [SerializeField] GameObject pieceGameObject;
-    PiecesDictsData piecesData;
-    MovePiece movePiece;
-    public int Depth = 5;
+    [SerializeField] GameObject _pieceGameObject;
+    PiecesDictsData _piecesData;
+    MovePiece _movePiece;
+    int _depth = 5;
+
     private void Awake()
     {
 
-        if (pieceGameObject.TryGetComponent<MovePiece>(out movePiece)) movePiece.OnPieceEndMoving += initialize;
-        else UnityEngine.Debug.LogError("MovePiece not found", pieceGameObject);
+        if (_pieceGameObject.TryGetComponent<MovePiece>(out _movePiece)) _movePiece.OnPieceEndMoving += initialize;
+        else UnityEngine.Debug.LogError("MovePiece not found", _pieceGameObject);
 
-        if (!pieceGameObject.TryGetComponent<PiecesDictsData>(out piecesData))
-            UnityEngine.Debug.LogError("PieceData not found", pieceGameObject);
+        if (!_pieceGameObject.TryGetComponent<PiecesDictsData>(out _piecesData))
+            UnityEngine.Debug.LogError("PieceData not found", _pieceGameObject);
 
     }
 
-    private void initialize(GameObject _piece)
+    private void initialize(GameObject piece)
     {
         GC.Collect();
         GC.Collect();
         GC.Collect();
 
 
-        Stopwatch _stopWatch = new();
-        _stopWatch.Start();
-        Dictionary<Vector2Int, GameObject> _blackPiece = new(piecesData.BlackPieceDict);
-        Dictionary<Vector2Int, GameObject> _whitePiece = new(piecesData.WhitePieceDict);
+        var stopWatch = new Stopwatch();
+        stopWatch.Start();
+        var blackPiece = new Dictionary<Vector2Int, GameObject>(_piecesData.BlackPieceDict);
+        var whitePiece = new Dictionary<Vector2Int, GameObject>(_piecesData.WhitePieceDict);
 
-        if (_blackPiece.ContainsValue(_piece)) return; //it was black's turns previously
+        if (blackPiece.ContainsValue(piece)) return; //it was black's turns previously
 
-        List<Tuple<Vector2Int, GameObject, float>> _possibleMoves = new();
-        GetComponent<IMiniMax>().GetBestMoves(_blackPiece, _whitePiece, Depth, _possibleMoves);
+        var possibleMoves = new List<Tuple<Vector2Int, GameObject, float>>();
+        GetComponent<IMiniMax>().GetBestMoves(blackPiece, whitePiece, _depth, possibleMoves);
 
-        List<Tuple<Vector2Int, GameObject, float>> _bestPossibleMovesList = new();
+        var bestPossibleMovesList = new List<Tuple<Vector2Int, GameObject, float>>();
 
-        GameObject _selectedPiece = _possibleMoves[0].Item2;
-        Vector2Int _toMovePost = new();
-        float _bestMove = Mathf.NegativeInfinity;
-        foreach (Tuple<Vector2Int, GameObject, float> x in _possibleMoves)
+        var selectedPiece = possibleMoves[0].Item2;
+        var toMovePost = new Vector2Int();
+        var bestMove = Mathf.NegativeInfinity;
+        foreach (var x in possibleMoves)
         {
 
-            if (_bestMove <= x.Item3)
+            if (bestMove <= x.Item3)
             {
-                if (_bestMove < x.Item3) _bestPossibleMovesList = new();
-                _bestMove = x.Item3;
-                _bestPossibleMovesList.Add(x);
+                if (bestMove < x.Item3) bestPossibleMovesList = new();
+                bestMove = x.Item3;
+                bestPossibleMovesList.Add(x);
             }
         }
-        int _randomIndex = UnityEngine.Random.Range(0, _bestPossibleMovesList.Count);
-        _selectedPiece = _bestPossibleMovesList[_randomIndex].Item2;
-        _toMovePost = _bestPossibleMovesList[_randomIndex].Item1;
+        var randomIndex = UnityEngine.Random.Range(0, bestPossibleMovesList.Count);
+        selectedPiece = bestPossibleMovesList[randomIndex].Item2;
+        toMovePost = bestPossibleMovesList[randomIndex].Item1;
 
-        _stopWatch.Stop();
+        stopWatch.Stop();
 
-        UnityEngine.Debug.Log("time taken by ai = " + _stopWatch.ElapsedMilliseconds);
-        UnityEngine.Debug.Log(_toMovePost + "  " + _selectedPiece.GetComponent<IPiece>().GetType() + "score = " + _bestMove, _selectedPiece);
-        movePiece.MovePieceTo(_selectedPiece, _toMovePost, true);
+        UnityEngine.Debug.Log($"time taken by ai = ,{ stopWatch.ElapsedMilliseconds}");
+
+        UnityEngine.Debug.Log($"{toMovePost}  {selectedPiece.GetComponent<IPiece>().GetType()} score = { bestMove}", selectedPiece);
+        _movePiece.MovePieceTo(selectedPiece, toMovePost, true);
 
 
     }
 
     private void OnDestroy()
     {
-        movePiece.OnPieceEndMoving -= initialize;
+        _movePiece.OnPieceEndMoving -= initialize;
     }
 
 }

@@ -3,36 +3,36 @@ using UnityEngine;
 [RequireComponent(typeof(InputReceiver))]
 public class InputTaskHandler : MonoBehaviour //forwards the input data to respective script
 {
-    [SerializeField] GameObject PiecesParent;
-    [SerializeField] GridData gridData;
-    SelectPiece selectPiece;
-    MovePiece movePiece;
-    GameObject selectedGameObject;
+    [SerializeField] GameObject _piecesParent;
+    [SerializeField] GridData _gridData;
+    SelectPiece _selectPiece;
+    MovePiece _movePiece;
+    GameObject _selectedGameObject;
 
 
     private void Awake()
     {
-        if (!PiecesParent.TryGetComponent<SelectPiece>(out selectPiece)) Debug.LogError("SelectPiece not found", PiecesParent);
-        if (!PiecesParent.TryGetComponent<MovePiece>(out movePiece)) Debug.LogError("MovePiece not found", PiecesParent);
+        if (!_piecesParent.TryGetComponent<SelectPiece>(out _selectPiece)) Debug.LogError("SelectPiece not found", _piecesParent);
+        if (!_piecesParent.TryGetComponent<MovePiece>(out _movePiece)) Debug.LogError("MovePiece not found", _piecesParent);
 
     }
 
 
-    public void NewInputRecieved(GameObject _newSelectedGameObject)
+    public void NewInputRecieved(GameObject newSelectedGameObject)
     {
-        selectPiece.Select(_newSelectedGameObject);
-        selectedGameObject = _newSelectedGameObject;
+        _selectPiece.Select(newSelectedGameObject);
+        _selectedGameObject = newSelectedGameObject;
     }
 
-    public void NewInputRecieved(Vector3 _mousePost)
+    public void NewInputRecieved(Vector3 mousePost)
     {
-        if (selectedGameObject == null) return;
+        if (_selectedGameObject == null) return;
 
-        Vector2Int _post = WorldToGridPostion.Convert(_mousePost, gridData);
+        var post = WorldToGridPostion.Convert(mousePost, _gridData);
 
-        if (gridData.TileExists(_post))
+        if (_gridData.TileExists(post))
         {
-            movePiece.MovePieceTo(selectedGameObject, _post);
+            _movePiece.MovePieceTo(_selectedGameObject, post);
         }
     }
 

@@ -4,9 +4,9 @@ using UnityEngine;
 
 public static class WorldToGridPostion
 {
-    public static Vector2Int Convert(Vector3 _post,GridData _gridData)
+    public static Vector2Int Convert(Vector3 post,GridData gridData)
     {
-        Vector2 _convertedPost = _post - _gridData.gameObject.transform.position;
-        return new(Mathf.RoundToInt(_convertedPost.x), Mathf.RoundToInt(_convertedPost.y));
+        var convertedPost = post - gridData.gameObject.transform.position;
+        return new(Mathf.RoundToInt(convertedPost.x), Mathf.RoundToInt(convertedPost.y));
     }
 }

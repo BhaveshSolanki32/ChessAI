@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class ModeUiStateHandler : MonoBehaviour, IUserInterface
 {
-    [SerializeField] ModeChanger modeChanger;
+    [SerializeField] ModeChanger _modeChanger;
     private void Awake()
     {
-        modeChanger.OnModeChange += (bool _temp)=> DeactivateScreen();
+        _modeChanger.OnModeChange += (bool _temp)=> DeactivateScreen();
     }
     public void ActivateScreen()
     {

@@ -5,56 +5,56 @@ using UnityEngine;
 [RequireComponent(typeof(InputTaskHandler))]
 public class InputReceiver : MonoBehaviour //recives input from user and selects the peice
 {
-    [SerializeField] Camera cam;
-    [SerializeField] SelectPiece selectPiece;
-    bool isPieceSelected = false;
-    [SerializeField]bool takeInput = true;
-    InputTaskHandler inputTaskHandler;
-    LayerMask whitePieceLayer;
-    LayerMask blackPieceLayer;
-    MovePiece movePiece;
-    bool isWhiteTurn = true;
+    [SerializeField] Camera _cam;
+    [SerializeField] SelectPiece _selectPiece;
+    [SerializeField] bool _takeInput = true;
+    bool _isPieceSelected = false;
+    InputTaskHandler _inputTaskHandler;
+    LayerMask _whitePieceLayer;
+    LayerMask _blackPieceLayer;
+    MovePiece _movePiece;
+    bool _isWhiteTurn = true;
 
 
     private void Awake()
     {
-        if (selectPiece == null) Debug.LogError("SelectPiece not found", gameObject);
+        if (_selectPiece == null) Debug.LogError("SelectPiece not found", gameObject);
         
 
-        if (!TryGetComponent<InputTaskHandler>(out inputTaskHandler)) Debug.LogError("InputTaskHandler not found", gameObject);
-        if (!selectPiece.TryGetComponent<MovePiece>(out movePiece)) Debug.LogError("MovePiece not found", selectPiece.gameObject);
+        if (!TryGetComponent<InputTaskHandler>(out _inputTaskHandler)) Debug.LogError("InputTaskHandler not found", gameObject);
+        if (!_selectPiece.TryGetComponent<MovePiece>(out _movePiece)) Debug.LogError("MovePiece not found", _selectPiece.gameObject);
 
 
-        movePiece.OnPieceStartMoving += (GameObject temp, Vector2Int _temp2) => isPieceSelected = false;
-        selectPiece.OnPieceSelectedEvent += (List<Vector2Int> _posts) => isPieceSelected = true;
-        movePiece.OnPieceStartMoving += (GameObject temp, Vector2Int _temp2) => isWhiteTurn = !isWhiteTurn;
+        _movePiece.OnPieceStartMoving += (GameObject temp, Vector2Int temp2) => _isPieceSelected = false;
+        _selectPiece.OnPieceSelectedEvent += (List<Vector2Int> posts) => _isPieceSelected = true;
+        _movePiece.OnPieceStartMoving += (GameObject temp, Vector2Int temp2) => _isWhiteTurn = !_isWhiteTurn;
 
-        movePiece.OnPieceStartMoving += (GameObject _piece, Vector2Int _temp) => takeInput = !takeInput;
+        _movePiece.OnPieceStartMoving += (GameObject piece, Vector2Int temp) => _takeInput = !_takeInput;
 
-        movePiece.OnPieceEndMoving += (GameObject _piece) => takeInput = !takeInput;
+        _movePiece.OnPieceEndMoving += (GameObject piece) => _takeInput = !_takeInput;
         
-        whitePieceLayer = LayerMask.GetMask("white");
-        blackPieceLayer = LayerMask.GetMask("black");
+        _whitePieceLayer = LayerMask.GetMask("white");
+        _blackPieceLayer = LayerMask.GetMask("black");
 
     }
 
     private void FixedUpdate()
     {
-        if (takeInput)
+        if (_takeInput)
         {
             if (Input.GetMouseButton(0))
             {
-                GameObject _newSelectedGameObject = RaycastTIleHit(Input.mousePosition, (isWhiteTurn)?(whitePieceLayer):(blackPieceLayer) );
+                var newSelectedGameObject = RaycastTIleHit(Input.mousePosition, (_isWhiteTurn)?(_whitePieceLayer):(_blackPieceLayer) );
 
-                if (_newSelectedGameObject != null) //clicked on piece
+                if (newSelectedGameObject != null) //clicked on piece
                 {
-                    inputTaskHandler.NewInputRecieved(_newSelectedGameObject);
+                    _inputTaskHandler.NewInputRecieved(newSelectedGameObject);
                 }
-                else if (isPieceSelected) //clicked on random post
+                else if (_isPieceSelected) //clicked on random post
                 {
-                    Vector3 _mouseWorldPost = cam.ScreenToWorldPoint(Input.mousePosition);
+                    var mouseWorldPost = _cam.ScreenToWorldPoint(Input.mousePosition);
 
-                    inputTaskHandler.NewInputRecieved(_mouseWorldPost);
+                    _inputTaskHandler.NewInputRecieved(mouseWorldPost);
                 }
 
             }
@@ -62,12 +62,12 @@ public class InputReceiver : MonoBehaviour //recives input from user and selects
 
     }
 
-    private GameObject RaycastTIleHit(Vector2 _mousePost, LayerMask _layer)
+    private GameObject RaycastTIleHit(Vector2 mousePost, LayerMask layer)
     {
-        Vector3 _mouseWorldPost = cam.ScreenToWorldPoint(_mousePost);
-        RaycastHit2D _hit = Physics2D.Raycast(_mouseWorldPost, cam.transform.forward, 100,_layer);
-        if (_hit.collider != null)
-            return _hit.collider.gameObject;
+        var mouseWorldPost = _cam.ScreenToWorldPoint(mousePost);
+        var hit = Physics2D.Raycast(mouseWorldPost, _cam.transform.forward, 100,layer);
+        if (hit.collider != null)
+            return hit.collider.gameObject;
         return null;
     }
 }

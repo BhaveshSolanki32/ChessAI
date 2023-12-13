@@ -7,12 +7,12 @@ public class KingMovePattern : BasePieceMovementPattern, IPiece
 {
     public int MoveDinstance { get; set; } = 1;
 
-    public List<Vector2Int> MovableTilePosts(Vector2Int _post, Dictionary<Vector2Int, GameObject> _whitePieceDict, Dictionary<Vector2Int, GameObject> _blackPieceDict)
+    public List<Vector2Int> MovableTilePosts(Vector2Int post, Dictionary<Vector2Int, GameObject> whitePieceDict, Dictionary<Vector2Int, GameObject> blackPieceDict)
     {
-        List<Vector2Int> _tilePosts = new();
-        _tilePosts.AddRange(allDirectionalMovePattern(MoveDinstance, _post,_whitePieceDict,_blackPieceDict));
-        _tilePosts.AddRange(allDirectionalMovePattern(MoveDinstance, _post,_whitePieceDict,_blackPieceDict,  true));
-        return _tilePosts;
+        var tilePosts = new List<Vector2Int>();
+        tilePosts.AddRange(allDirectionalMovePattern(MoveDinstance, post,whitePieceDict,blackPieceDict));
+        tilePosts.AddRange(allDirectionalMovePattern(MoveDinstance, post,whitePieceDict,blackPieceDict,  true));
+        return tilePosts;
 
 
     }

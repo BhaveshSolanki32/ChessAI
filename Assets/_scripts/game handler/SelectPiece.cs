@@ -9,14 +9,14 @@ public class SelectPiece : MonoBehaviour //selects the peice
     public event Action<List<Vector2Int>> OnPieceSelectedEvent;
 
 
-    public void Select(GameObject _pieceGameObject)
+    public void Select(GameObject pieceGameObject)
     {
-        IPiece _peice;
+        IPiece peice;
 
-        if (!_pieceGameObject.TryGetComponent<IPiece>(out _peice))
+        if (!pieceGameObject.TryGetComponent<IPiece>(out peice))
             Debug.LogError("no Ipiece interface found", gameObject);
 
-        List<Vector2Int> _movablesTilePosts = _peice.MovableTilePosts(_pieceGameObject.GetComponent<ChessPieceData>().Post, GetComponent<PiecesDictsData>().WhitePieceDict, GetComponent<PiecesDictsData>().BlackPieceDict);
+        var _movablesTilePosts = peice.MovableTilePosts(pieceGameObject.GetComponent<ChessPieceData>().Post, GetComponent<PiecesDictsData>().WhitePieceDict, GetComponent<PiecesDictsData>().BlackPieceDict);
 
         OnPieceSelectedEvent?.Invoke(_movablesTilePosts);
 

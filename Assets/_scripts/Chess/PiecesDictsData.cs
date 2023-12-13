@@ -5,79 +5,83 @@ using UnityEngine;
 [RequireComponent(typeof(MovePiece), typeof(SelectPiece))]
 public class PiecesDictsData : MonoBehaviour // holds data for player and opponents piece postion and updates it
 {
+    [SerializeField] GameObject _playerPiecesParent;
+    [SerializeField] GameObject _opponentPiecesParent;
     public Dictionary<Vector2Int, GameObject> WhitePieceDict = new();
     public Dictionary<Vector2Int, GameObject> BlackPieceDict= new();
-    [SerializeField] GameObject playerPiecesParent;
-    [SerializeField] GameObject OpponentPiecesParent;
+
     private void Awake()
     {
-        foreach (ChessPieceData x in playerPiecesParent.transform.GetComponentsInChildren<ChessPieceData>())
+        foreach (var x in _playerPiecesParent.transform.GetComponentsInChildren<ChessPieceData>())
         {
             intitialAddPiecePost(x, true);
         }
-        foreach (ChessPieceData x in OpponentPiecesParent.transform.GetComponentsInChildren<ChessPieceData>())
+        foreach (var x in _opponentPiecesParent.transform.GetComponentsInChildren<ChessPieceData>())
         {
 
             intitialAddPiecePost(x, false);
         }
-        MovePiece _movePiece;
-        if (TryGetComponent<MovePiece>(out _movePiece))
-            _movePiece.OnPieceStartMoving += (GameObject _piece, Vector2Int _newPost) => UpdatePiecePost(_piece.GetComponent<ChessPieceData>(), _newPost);
+        var movePiece =new MovePiece();
+        if (TryGetComponent<MovePiece>(out movePiece))
+            movePiece.OnPieceStartMoving += (GameObject piece, Vector2Int newPost) => UpdatePiecePost(piece.GetComponent<ChessPieceData>(), newPost);
 
     }
 
 
-    private void intitialAddPiecePost(ChessPieceData _chessPieceData, bool _isPlayerPost)
-    {
-        Vector2Int _newPost = _chessPieceData.Post;
-        if (_isPlayerPost)
-            WhitePieceDict.Add(_newPost, _chessPieceData.gameObject);
-        else
-            BlackPieceDict.Add(_newPost, _chessPieceData.gameObject);
-    }
-
-    public void UpdatePiecePost(ChessPieceData _chessPieceData, Vector2Int _newPost)
+    public void UpdatePiecePost(ChessPieceData chessPieceData, Vector2Int newPost)
     {
         
-        bool _isPlayerPost = WhitePieceDict.ContainsKey(_chessPieceData.Post);
+        var isPlayerPost = WhitePieceDict.ContainsKey(chessPieceData.Post);
         
-        if (DoesPieceExist(_newPost, _isPlayerPost)) return;
+        if (DoesPieceExist(newPost, isPlayerPost)) return;
 
 
-        if (_isPlayerPost)
+        if (isPlayerPost)
         {
-            if (BlackPieceDict.ContainsKey(_newPost)) pieceCaptured(ref BlackPieceDict, _newPost);
+            if (BlackPieceDict.ContainsKey(newPost)) pieceCaptured(ref BlackPieceDict, newPost);
 
-            WhitePieceDict.Add(_newPost, _chessPieceData.gameObject);
-            WhitePieceDict.Remove(_chessPieceData.Post);
-            _chessPieceData.Post = _newPost;
+            WhitePieceDict.Add(newPost, chessPieceData.gameObject);
+            WhitePieceDict.Remove(chessPieceData.Post);
+            chessPieceData.Post = newPost;
         }
         else
         {
-            if (WhitePieceDict.ContainsKey(_newPost)) pieceCaptured(ref WhitePieceDict, _newPost);
+            if (WhitePieceDict.ContainsKey(newPost)) pieceCaptured(ref WhitePieceDict, newPost);
    
 
-            BlackPieceDict.Add(_newPost, _chessPieceData.gameObject);
-            BlackPieceDict.Remove(_chessPieceData.Post);
-            _chessPieceData.Post = _newPost;
+            BlackPieceDict.Add(newPost, chessPieceData.gameObject);
+            BlackPieceDict.Remove(chessPieceData.Post);
+            chessPieceData.Post = newPost;
         }
 
     }
 
-    void pieceCaptured(ref Dictionary<Vector2Int, GameObject> _postData, Vector2Int _post)
+    public bool DoesPieceExist(Vector2Int post, bool isPlayerPost)
     {
-        GameObject _piece = _postData[_post];
-        _postData.Remove(_post);
-        
-        Destroy(_piece);
+        if (isPlayerPost)
+            return WhitePieceDict.ContainsKey(post);
+        else
+            return BlackPieceDict.ContainsKey(post);
     }
 
-    public bool DoesPieceExist(Vector2Int _post, bool _isPlayerPost)
+    private void intitialAddPiecePost(ChessPieceData chessPieceData, bool isPlayerPost)
     {
-        if (_isPlayerPost)
-            return WhitePieceDict.ContainsKey(_post);
+        var newPost = chessPieceData.Post;
+        if (isPlayerPost)
+            WhitePieceDict.Add(newPost, chessPieceData.gameObject);
         else
-            return BlackPieceDict.ContainsKey(_post);
+            BlackPieceDict.Add(newPost, chessPieceData.gameObject);
     }
+
+
+    void pieceCaptured(ref Dictionary<Vector2Int, GameObject> postData, Vector2Int post)
+    {
+        var piece = postData[post];
+        postData.Remove(post);
+        
+        Destroy(piece);
+    }
+
+ 
 
 }

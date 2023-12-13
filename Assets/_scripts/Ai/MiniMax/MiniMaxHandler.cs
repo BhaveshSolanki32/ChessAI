@@ -5,123 +5,123 @@ using UnityEngine;
 [RequireComponent(typeof(AiPiecePostUpdater), typeof(HeuristicFunctionCalc))]
 public class MiniMaxHandler : MonoBehaviour, IMiniMax
 {
-    AiPiecePostUpdater aiPiecePostUpdater;
+    AiPiecePostUpdater _aiPiecePostUpdater;
 
-    HeuristicFunctionCalc heuristicFunctionCalc;
-    Dictionary<GameObject, IPiece> gameObjectIPieceDict= new();
+    HeuristicFunctionCalc _heuristicFunctionCalc;
+    Dictionary<GameObject, IPiece> _gameObjectIPieceDict= new();
 
     private void Awake()
     {
-        aiPiecePostUpdater = GetComponent<AiPiecePostUpdater>();
-        heuristicFunctionCalc = GetComponent<HeuristicFunctionCalc>();
+        _aiPiecePostUpdater = GetComponent<AiPiecePostUpdater>();
+        _heuristicFunctionCalc = GetComponent<HeuristicFunctionCalc>();
     }
 
     //returns list of all posible moves with thier scores
-    public void GetBestMoves(Dictionary<Vector2Int, GameObject> _blackPieceDict, Dictionary<Vector2Int, GameObject> _whitePieceDict, int _depth, List<Tuple<Vector2Int, GameObject, float>> _possibleMoves)
+    public void GetBestMoves(Dictionary<Vector2Int, GameObject> blackPieceDict, Dictionary<Vector2Int, GameObject> whitePieceDict, int depth, List<Tuple<Vector2Int, GameObject, float>> possibleMoves)
     {
-        updateGameObjectIpieceDict(_whitePieceDict,_blackPieceDict);
+        updateGameObjectIpieceDict(whitePieceDict,blackPieceDict);
 
-        foreach (Vector2Int x in _blackPieceDict.Keys)
+        foreach (Vector2Int x in blackPieceDict.Keys)
         {
-            List<Vector2Int> _movableTiles = gameObjectIPieceDict[_blackPieceDict[x]].MovableTilePosts(x, _whitePieceDict,_blackPieceDict);
-            foreach (Vector2Int y in _movableTiles)
+            var movableTiles = _gameObjectIPieceDict[blackPieceDict[x]].MovableTilePosts(x, whitePieceDict,blackPieceDict);
+            foreach (Vector2Int y in movableTiles)
             {
-                Dictionary<Vector2Int, GameObject> _newBlackPiece = new(_blackPieceDict);
-                Dictionary<Vector2Int, GameObject> _newWhitePiece = new(_whitePieceDict);
+                var newBlackPiece = new Dictionary<Vector2Int, GameObject>(blackPieceDict);
+                var newWhitePiece = new Dictionary<Vector2Int, GameObject>(whitePieceDict);
 
-                aiPiecePostUpdater.UpdatePiecePost(_blackPieceDict[x], y, _newWhitePiece, _newBlackPiece);
+                _aiPiecePostUpdater.UpdatePiecePost(blackPieceDict[x], y, newWhitePiece, newBlackPiece);
 
 
-                float _newScore = miniMaxFindBestMove(_newBlackPiece, _newWhitePiece, _depth - 1, true, -999999999f, 999999999f);
+                var newScore = miniMaxFindBestMove(newBlackPiece, newWhitePiece, depth - 1, true, -999999999f, 999999999f);
 
-                disposeVar(_newWhitePiece);
-                disposeVar(_newBlackPiece);
+                disposeVar(newWhitePiece);
+                disposeVar(newBlackPiece);
 
-                _possibleMoves.Add(new(y, _blackPieceDict[x], _newScore));
+                possibleMoves.Add(new(y, blackPieceDict[x], newScore));
                 GC.Collect();
                 GC.Collect();
 
             }
-            disposeVar(_movableTiles);
+            disposeVar(movableTiles);
 
         }
 
-        disposeVar(_blackPieceDict);
+        disposeVar(blackPieceDict);
     }
 
-    private void updateGameObjectIpieceDict(Dictionary<Vector2Int, GameObject> _whitePieceDict, Dictionary<Vector2Int, GameObject> _blackPieceDict)
+    private void updateGameObjectIpieceDict(Dictionary<Vector2Int, GameObject> whitePieceDict, Dictionary<Vector2Int, GameObject> blackPieceDict)
     {
-        gameObjectIPieceDict.Clear();
-        foreach (GameObject x in _whitePieceDict.Values) gameObjectIPieceDict.Add(x, x.GetComponent<IPiece>());
-        foreach (GameObject x in _blackPieceDict.Values) gameObjectIPieceDict.Add(x, x.GetComponent<IPiece>());
+        _gameObjectIPieceDict.Clear();
+        foreach (GameObject x in whitePieceDict.Values) _gameObjectIPieceDict.Add(x, x.GetComponent<IPiece>());
+        foreach (GameObject x in blackPieceDict.Values) _gameObjectIPieceDict.Add(x, x.GetComponent<IPiece>());
 
     }
 
     //recursively performs minimax to the desired depth
-    float miniMaxFindBestMove(Dictionary<Vector2Int, GameObject> _blackPieceDict, Dictionary<Vector2Int, GameObject> _whitePieceDict, int _depth, bool _isWhiteTurn, float _alpha, float _beta)
+    float miniMaxFindBestMove(Dictionary<Vector2Int, GameObject> blackPieceDict, Dictionary<Vector2Int, GameObject> whitePieceDict, int depth, bool isWhiteTurn, float alpha, float beta)
     {
 
-        float _score = (_isWhiteTurn) ? (Mathf.Infinity) : (Mathf.NegativeInfinity);
+        var score = (isWhiteTurn) ? (Mathf.Infinity) : (Mathf.NegativeInfinity);
 
-        if (_depth < 1 || aiPiecePostUpdater.IsKingDead(_whitePieceDict, _blackPieceDict))
+        if (depth < 1 || _aiPiecePostUpdater.IsKingDead(whitePieceDict, blackPieceDict))
         {
 
-            _score = heuristicFunctionCalc.CalcHeuristics(_blackPieceDict, _whitePieceDict,gameObjectIPieceDict);
-            return _score;
+            score = _heuristicFunctionCalc.CalcHeuristics(blackPieceDict, whitePieceDict,_gameObjectIPieceDict);
+            return score;
         }
-        Dictionary<Vector2Int, GameObject> _toCheckDict = (_isWhiteTurn) ? (_whitePieceDict) : (_blackPieceDict);
-        foreach (Vector2Int x in _toCheckDict.Keys)
+        Dictionary<Vector2Int, GameObject> toCheckDict = (isWhiteTurn) ? (whitePieceDict) : (blackPieceDict);
+        foreach (Vector2Int x in toCheckDict.Keys)
         {
-            List<Vector2Int> _movableTiles = gameObjectIPieceDict[_toCheckDict[x]].MovableTilePosts(x,_whitePieceDict,_blackPieceDict);
-            foreach (Vector2Int y in _movableTiles)
+            List<Vector2Int> movableTiles = _gameObjectIPieceDict[toCheckDict[x]].MovableTilePosts(x,whitePieceDict,blackPieceDict);
+            foreach (Vector2Int y in movableTiles)
             {
 
-                Dictionary<Vector2Int, GameObject> _newBlackPiece = new(_blackPieceDict);
-                Dictionary<Vector2Int, GameObject> _newWhitePiece = new(_whitePieceDict);
+                var newBlackPiece = new Dictionary<Vector2Int, GameObject>(blackPieceDict);
+                var newWhitePiece = new Dictionary<Vector2Int, GameObject>(whitePieceDict);
 
 
-                aiPiecePostUpdater.UpdatePiecePost(_toCheckDict[x], y, _newWhitePiece, _newBlackPiece);
+                _aiPiecePostUpdater.UpdatePiecePost(toCheckDict[x], y, newWhitePiece, newBlackPiece);
 
-                float _newScore = miniMaxFindBestMove(_newBlackPiece, _newWhitePiece, _depth - 1, !_isWhiteTurn, _alpha, _beta);
+                var newScore = miniMaxFindBestMove(newBlackPiece, newWhitePiece, depth - 1, !isWhiteTurn, alpha, beta);
 
-                disposeVar(_newWhitePiece);
-                disposeVar(_newBlackPiece);
+                disposeVar(newWhitePiece);
+                disposeVar(newBlackPiece);
 
 
-                _score = (_isWhiteTurn) ? (Mathf.Min(_score, _newScore)) : (Mathf.Max(_score, _newScore));
+                score = (isWhiteTurn) ? (Mathf.Min(score, newScore)) : (Mathf.Max(score, newScore));
 
-                if (_isWhiteTurn)//minimizing player
+                if (isWhiteTurn)//minimizing player
                 {
-                    _score = Mathf.Min(_score, _newScore);
-                    _beta = Mathf.Min(_newScore, _beta);
+                    score = Mathf.Min(score, newScore);
+                    beta = Mathf.Min(newScore, beta);
                 }
                 else//maximising player
                 {
-                    _score = Mathf.Max(_score, _newScore);
-                    _alpha = Mathf.Max(_alpha, _newScore);
+                    score = Mathf.Max(score, newScore);
+                    alpha = Mathf.Max(alpha, newScore);
                 }
 
-                if (_beta <= _alpha) break;
+                if (beta <= alpha) break;
 
 
             }
-            disposeVar(_movableTiles);
+            disposeVar(movableTiles);
         }
-        disposeVar(_whitePieceDict);
-        disposeVar(_blackPieceDict);
-        disposeVar(_toCheckDict);
-        return (int)_score;
+        disposeVar(whitePieceDict);
+        disposeVar(blackPieceDict);
+        disposeVar(toCheckDict);
+        return (int)score;
     }
 
 
-    void disposeVar(Dictionary<Vector2Int, GameObject> _dict)
+    void disposeVar(Dictionary<Vector2Int, GameObject> dict)
     {
-        _dict.Clear();
+        dict.Clear();
     }
 
-    void disposeVar(List<Vector2Int> _dict)
+    void disposeVar(List<Vector2Int> dict)
     {
-        _dict.Clear();
+        dict.Clear();
     }
 
 
